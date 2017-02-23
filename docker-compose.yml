@@ -27,47 +27,60 @@ services:
 #        tty: true
 #
 ### MySQL Container #########################################
-    mysql:
+#    mysql:
+#        build:
+#            context: ./mysql
+#            args:
+#                - MYSQL_DATABASE=ditto_writer
+#                - MYSQL_USER=ditto
+#                - MYSQL_PASSWORD=ditto
+#                - MYSQL_ROOT_PASSWORD=ditto
+#        volumes:
+#            - mysql:/var/lib/mysql
+#        ports:
+#            - "3306:3306"
+#
+### Httpd Server Container ##################################
+
+    httpd:
         build:
-            context: ./mysql
-            args:
-                - MYSQL_DATABASE=ditto_writer
-                - MYSQL_USER=ditto
-                - MYSQL_PASSWORD=ditto
-                - MYSQL_ROOT_PASSWORD=ditto
-        volumes:
-            - mysql:/var/lib/mysql
-        ports:
-            - "3306:3306"
-
-### PHP-FPM Container #######################################
-
-    php-fpm:
-        build:
-            context: ./php-fpm
-            dockerfile: Dockerfile
-        volumes_from:
-            - applications
-        expose:
-            - "9000"
-
-### Nginx Server Container ##################################
-
-    nginx:
-        build:
-            context: ./nginx
-            args:
-                - PHP_UPSTREAM=php-fpm
+            context: ./httpd
         volumes_from:
             - applications
         volumes:
-            - ./logs/nginx/:/var/log/nginx
-            - ./nginx/sites/:/etc/nginx/sites-available
+            - ./logs/httpd/:/var/log/httpd
         ports:
             - "80:80"
             - "443:443"
-        links:
-            - php-fpm
+        tty: true
+### PHP-FPM Container #######################################
+
+#    php-fpm:
+#        build:
+#            context: ./php-fpm
+#            dockerfile: Dockerfile
+#        volumes_from:
+#            - applications
+#        expose:
+#            - "9000"
+#
+### Nginx Server Container ##################################
+
+#    nginx:
+#        build:
+#            context: ./nginx
+#            args:
+#                - PHP_UPSTREAM=php-fpm
+#        volumes_from:
+#            - applications
+#        volumes:
+#            - ./logs/nginx/:/var/log/nginx
+#            - ./nginx/sites/:/etc/nginx/sites-available
+#        ports:
+#            - "80:80"
+#            - "443:443"
+#        links:
+#            - php-fpm
 
 ### Redis Container #########################################
 
