@@ -43,6 +43,7 @@ services:
 ### Httpd Server Container ##################################
 
     httpd:
+        container_name: httpd
         build:
             context: ./httpd
         volumes_from:
@@ -85,6 +86,7 @@ services:
 ### Redis Container #########################################
 
     redis:
+        container_name: redis
         build: ./redis
         volumes:
             - redis:/data
