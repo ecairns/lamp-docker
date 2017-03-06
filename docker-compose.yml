@@ -53,6 +53,12 @@ services:
         ports:
             - "80:80"
             - "443:443"
+        links:
+            - redis
+            - memcached
+        environment:
+            REDIS_URL: redis://redis
+            MEMCACHE_SERVERS: memcache
         tty: true
 ### PHP-FPM Container #######################################
 
@@ -82,6 +88,15 @@ services:
 #            - "443:443"
 #        links:
 #            - php-fpm
+
+### Memcached Container #########################################
+
+    memcached:
+        container_name: memcached
+        build: ./memcached
+        ports:
+            - "11211:11211"
+        tty: true
 
 ### Redis Container #########################################
 

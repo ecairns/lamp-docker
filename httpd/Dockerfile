@@ -30,10 +30,13 @@ RUN apt-get update && \
       php-pear \
       php7.0-zip 
 
+##
+# Enabled header mod for apache
+RUN cp /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
+
 #####################################
 # PHP REDIS EXTENSION FOR PHP 7.0
 #####################################
-ARG INSTALL_PHPREDIS=false
 RUN pecl install -o -f redis \
     &&  rm -rf /tmp/pear 
 
