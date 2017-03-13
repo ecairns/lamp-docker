@@ -10,23 +10,6 @@ services:
         volumes:
             - ../:/var/www
 
-### Workspace Utilities Container ###########################
-#    workspace:
-#        build:
-#            context: ./workspace
-#            args:
-#                - PUID=1000
-#                - PGID=1000
-#                - TZ=UTC
-#        volumes_from:
-#            - applications
-#        extra_hosts:
-#            # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
-#            - "dockerhost:10.0.75.1"
-#        ports:
-#           - "2222:22"
-#        tty: true
-#
 ### MySQL Container #########################################
     mysql:
         container_name: mysql
@@ -56,6 +39,7 @@ services:
             - "80:80"
             - "443:443"
         links:
+            - solr
             - redis
             - memcached
             - mysql
@@ -63,34 +47,6 @@ services:
             REDIS_URL: redis://redis
             MEMCACHE_SERVERS: memcache
         tty: true
-### PHP-FPM Container #######################################
-
-#    php-fpm:
-#        build:
-#            context: ./php-fpm
-#            dockerfile: Dockerfile
-#        volumes_from:
-#            - applications
-#        expose:
-#            - "9000"
-#
-### Nginx Server Container ##################################
-
-#    nginx:
-#        build:
-#            context: ./nginx
-#            args:
-#                - PHP_UPSTREAM=php-fpm
-#        volumes_from:
-#            - applications
-#        volumes:
-#            - ./logs/nginx/:/var/log/nginx
-#            - ./nginx/sites/:/etc/nginx/sites-available
-#        ports:
-#            - "80:80"
-#            - "443:443"
-#        links:
-#            - php-fpm
 
 ### Memcached Container #########################################
 
@@ -110,6 +66,65 @@ services:
             - redis:/data
         ports:
             - "6379:6379"
+              
+### Solr Container #########################################
+
+    solr:
+        container_name: solr
+        build:
+            context: ./solr
+        ports:
+            - "8983:8983"
+        volumes:
+            - ./logs/solr:/var/solr/logs
+        tty: true
+
+### Workspace Utilities Container ###########################
+#    workspace:
+#        build:
+#            context: ./workspace
+#            args:
+#                - PUID=1000
+#                - PGID=1000
+#                - TZ=UTC
+#        volumes_from:
+#            - applications
+#        extra_hosts:
+#            # IMPORTANT: Replace with your Docker Host IP (will be appended to /etc/hosts)
+#            - "dockerhost:10.0.75.1"
+#        ports:
+#           - "2222:22"
+#        tty: true
+#
+
+### PHP-FPM Container #######################################
+
+#    php-fpm:
+#        build:
+#            context: ./php-fpm
+#            dockerfile: Dockerfile
+#        volumes_from:
+#            - applications
+#        expose:
+#            - "9000"
+
+### Nginx Server Container ##################################
+
+#    nginx:
+#        build:
+#            context: ./nginx
+#            args:
+#                - PHP_UPSTREAM=php-fpm
+#        volumes_from:
+#            - applications
+#        volumes:
+#            - ./logs/nginx/:/var/log/nginx
+#            - ./nginx/sites/:/etc/nginx/sites-available
+#        ports:
+#            - "80:80"
+#            - "443:443"
+#        links:
+#            - php-fpm
 
 ### Volumes Setup ###########################################
 
@@ -117,4 +132,6 @@ volumes:
     mysql:
         driver: "local"
     redis:
+        driver: "local"
+    solr:
         driver: "local"
