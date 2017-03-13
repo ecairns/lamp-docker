@@ -5,6 +5,7 @@ services:
 ### Applications Code Container #############################
 
     applications:
+        container_name: app
         image: tianon/true
         volumes:
             - ../:/var/www
@@ -27,19 +28,20 @@ services:
 #        tty: true
 #
 ### MySQL Container #########################################
-#    mysql:
-#        build:
-#            context: ./mysql
-#            args:
-#                - MYSQL_DATABASE=ditto_writer
-#                - MYSQL_USER=ditto
-#                - MYSQL_PASSWORD=ditto
-#                - MYSQL_ROOT_PASSWORD=ditto
-#        volumes:
-#            - mysql:/var/lib/mysql
-#        ports:
-#            - "3306:3306"
-#
+    mysql:
+        container_name: mysql
+        build:
+            context: ./mysql
+            args:
+                - MYSQL_DATABASE=ditto_writer
+                - MYSQL_USER=ditto
+                - MYSQL_PASSWORD=ditto
+                - MYSQL_ROOT_PASSWORD=ditto
+        volumes:
+            - mysql:/var/lib/mysql
+        ports:
+            - "3306:3306"
+
 ### Httpd Server Container ##################################
 
     httpd:
@@ -56,6 +58,7 @@ services:
         links:
             - redis
             - memcached
+            - mysql
         environment:
             REDIS_URL: redis://redis
             MEMCACHE_SERVERS: memcache
