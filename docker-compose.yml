@@ -77,6 +77,8 @@ services:
             - "8983:8983"
         volumes:
             - ./logs/solr:/var/solr/logs
+            - ./solr/data:/var/solr/data
+            - ./solr/log4j.properties:/var/solr/log4j.properties
         tty: true
 
 ### Workspace Utilities Container ###########################

@@ -25,7 +25,12 @@ RUN cd /opt && \
     ./install_solr_service.sh solr-6.4.2.tgz
 
 RUN usermod -u 1000 solr
-WORKDIR /var/solr/logs
+
+WORKDIR /var/solr
+COPY run /etc/init.d/solr
 
 EXPOSE 8983
-#CMD ["cd /opt/solr && java -jar start.jar"]
+ENTRYPOINT /etc/init.d/solr start
+
+CMD ["TRUE"]
+
