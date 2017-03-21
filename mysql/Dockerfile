@@ -1,4 +1,4 @@
-FROM mysql:5.7
+FROM percona:5.7
 
 MAINTAINER Ethan Cairns <ecairns@oklahoman.com>
 
