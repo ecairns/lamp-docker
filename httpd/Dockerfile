@@ -35,6 +35,15 @@ RUN apt-get update && \
 RUN cp /etc/apache2/mods-available/headers.load /etc/apache2/mods-enabled/
 
 #####################################
+# PHP XDebug EXTENSION FOR PHP 7.0
+#####################################
+RUN pecl install -o -f xdebug \
+    &&  rm -rf /tmp/pear 
+
+COPY ./xdebug.ini /etc/php/7.0/apache2/conf.d/10-xdebug.ini
+COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/10-xdebug.ini
+
+#####################################
 # PHP REDIS EXTENSION FOR PHP 7.0
 #####################################
 RUN pecl install -o -f redis \
