@@ -71,14 +71,13 @@ services:
 
     solr:
         container_name: solr
-        build:
-            context: ./solr
+        image: solr
         ports:
             - "8983:8983"
         volumes:
-            - ./logs/solr:/var/solr/logs
-            - ./solr/data:/var/solr/data
-            - ./solr/log4j.properties:/var/solr/log4j.properties
+            - ./solr/data:/opt/solr/server/solr/mycores
+            - ./logs/solr:/opt/solr/server/solr/logs
+            - ./solr/log4j.properties:/opt/solr/server/solr/log4j.properties
         tty: true
 
 ### Workspace Utilities Container ###########################
