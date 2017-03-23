@@ -99,3 +99,4 @@ WORKDIR /var/www
 
 EXPOSE 80
 CMD ["/usr/local/bin/run"]
+#CMD ["/bin/bash"]
