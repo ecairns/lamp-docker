@@ -6,6 +6,7 @@ RUN apt-get update && \
     apt-get dist-upgrade -y && \
     apt-get install -y \
       curl \
+      libcurl4-gnutls-dev libxml2-dev \
       libmemcached-dev \
       apache2 \
       mcrypt php7.0-mcrypt \
@@ -46,6 +47,13 @@ COPY ./xdebug.ini /etc/php/7.0/apache2/conf.d/10-xdebug.ini
 COPY ./xdebug.ini /etc/php/7.0/cli/conf.d/10-xdebug.ini
 
 #####################################
+# PHP Solr EXTENSION FOR PHP 7.0
+#####################################
+RUN pecl install -o -f solr \
+    &&  rm -rf /tmp/pear 
+COPY ./solr.ini /etc/php/7.0/apache2/conf.d/10-solr.ini
+
+#####################################
 # PHP REDIS EXTENSION FOR PHP 7.0
 #####################################
 #RUN pecl install -o -f redis &&  rm -rf /tmp/pear 
@@ -59,7 +67,7 @@ RUN curl -L -o /tmp/redis.tar.gz "https://pecl.php.net/get/redis"  && \
         ./configure && \
         make -j$(nproc) && \
         make install && \
-    rm -r redis && \
+    rm -r /tmp/redis && \
     rm /tmp/redis.tar.gz 
 
 COPY ./redis.ini /etc/php/7.0/apache2/conf.d/10-redis.ini
