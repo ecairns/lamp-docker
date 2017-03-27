@@ -30,6 +30,7 @@ RUN apt-get update && \
       php7.0-sqlite3 \
       php7.0-xml \
       php7.0-xsl \
+      php7.0-tidy \
       php-pear \
       php7.0-zip 
 
@@ -73,6 +74,13 @@ RUN curl -L -o /tmp/redis.tar.gz "https://pecl.php.net/get/redis"  && \
 COPY ./redis.ini /etc/php/7.0/apache2/conf.d/10-redis.ini
 COPY ./redis.ini /etc/php/7.0/cli/conf.d/10-redis.ini
 
+#####################################
+# apcu FOR PHP 7.0
+#####################################
+RUN pecl install -o -f apcu-beta \
+    &&  rm -rf /tmp/pear 
+
+COPY ./apc.ini /etc/php/7.0/apache2/conf.d/10-apc.ini
 #####################################
 # PHP Memcached:
 #####################################
