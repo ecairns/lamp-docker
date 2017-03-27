@@ -17,9 +17,9 @@
   ServerName lh.writer.newsok.com
 
   ServerAdmin ecairns@oklahoman.com
-  DocumentRoot /var/www/writer/admin/public
+  DocumentRoot /var/www/writer/server/public
 
-  <Directory /var/www/writer/admin/public>
+  <Directory /var/www/writer/server/public>
       AllowOverride All
       Require all granted
   </Directory>
