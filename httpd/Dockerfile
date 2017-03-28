@@ -9,6 +9,7 @@ RUN apt-get update && \
       libcurl4-gnutls-dev libxml2-dev \
       libmemcached-dev \
       apache2 \
+      vim \
       mcrypt php7.0-mcrypt \
       pkg-config \
       libfreetype6-dev \
@@ -77,7 +78,8 @@ COPY ./redis.ini /etc/php/7.0/cli/conf.d/10-redis.ini
 #####################################
 # apcu FOR PHP 7.0
 #####################################
-RUN pecl install -o -f apcu-beta \
+RUN pecl install -o -f apcu-beta 
+RUN pecl install apcu_bc-1.0.3 \
     &&  rm -rf /tmp/pear 
 
 COPY ./apc.ini /etc/php/7.0/apache2/conf.d/10-apc.ini
